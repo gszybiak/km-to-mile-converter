@@ -1,5 +1,5 @@
 pipeline {
-    agenta ny
+    agent any
 
     environment {
         MAVEN_HOME = tool name: 'Maven', type: 'ToolLocation'

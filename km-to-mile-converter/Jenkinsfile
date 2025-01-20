@@ -1,0 +1,38 @@
+pipeline {
+    agenta ny
+
+    environment {
+        MAVEN_HOME = tool name: 'Maven', type: 'ToolLocation'
+        JAVA_HOME = tool name: 'JDK 17', type: 'ToolLocation'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/gszybiak/km-to-mile-converter.git'
+            }
+        }
+
+        stage('Build & Test') {
+            steps {
+                script {
+                    sh "${MAVEN_HOME}/bin/mvn clean test"
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    sh "${MAVEN_HOME}/bin/mvn spring-boot:run"
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            junit '**/target/test-*.xml'
+        }
+    }
+}

@@ -34,8 +34,8 @@ pipeline {
                     echo "MAVEN_HOME: ${MAVEN_HOME}"
                     echo "JAVA_HOME: ${JAVA_HOME}"
                     echo "GIT_HOME: ${GIT_HOME}"
-                    bat "mvn.cmd -version" // Sprawdzenie wersji Maven
-                    bat "mvn.cmd clean test" // Kompilacja i uruchomienie testów
+                    bat "mvn.cmd -version"
+                    bat "mvn.cmd clean test -f C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Converter\\km-to-mile-converter\\pom.xml" // Kompilacja i uruchomienie testów
                 }
             }
         }
@@ -44,7 +44,7 @@ pipeline {
             steps {
                 script {
                     echo "Starting the application..."
-                    bat "mvn.cmd spring-boot:run"
+                    bat "mvn.cmd spring-boot:run -f C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Converter\\km-to-mile-converter\\pom.xml"
                 }
             }
         }

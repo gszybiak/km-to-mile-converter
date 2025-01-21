@@ -4,6 +4,7 @@ pipeline {
     environment {
         MAVEN_HOME = tool name: 'Maven 2', type: 'maven'
         JAVA_HOME = tool name: 'JDK 17', type: 'jdk'
+        PATH = "${env.PATH};${MAVEN_HOME}\\bin;${JAVA_HOME}\\bin"
     }
 
     stages {
@@ -16,7 +17,11 @@ pipeline {
         stage('Build & Test') {
             steps {
                 script {
-                    bat "${MAVEN_HOME}\\bin\\mvn.cmd clean test"
+                    echo "MAVEN_HOME: ${MAVEN_HOME}"
+                    echo "JAVA_HOME: ${JAVA_HOME}"
+                    echo "PATH: ${env.PATH}"
+                    bat "mvn.cmd -version"
+                    bat "mvn.cmd clean test"
                 }
             }
         }
@@ -24,7 +29,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    bat "${MAVEN_HOME}\\bin\\mvn.cmd spring-boot:run"
+                    bat "mvn.cmd spring-boot:run"
                 }
             }
         }

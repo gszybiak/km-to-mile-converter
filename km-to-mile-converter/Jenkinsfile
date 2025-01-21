@@ -5,7 +5,7 @@ pipeline {
         MAVEN_HOME = tool name: 'Maven 2', type: 'maven'
         JAVA_HOME = tool name: 'JDK 17', type: 'jdk'
         GIT_HOME = tool name: 'Git', type: 'git'
-        PATH = "${env.PATH};${MAVEN_HOME}\\bin;${JAVA_HOME}\\bin;${GIT_HOME}\\bin"
+        PATH = "${env.PATH};${MAVEN_HOME}\\bin;${JAVA_HOME}\\bin;${GIT_HOME}\\bin;C:\\Windows\\System32;C:\\Program Files\\Git\\cmd"
     }
 
     stages {

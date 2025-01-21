@@ -4,13 +4,17 @@ pipeline {
     environment {
         MAVEN_HOME = tool name: 'Maven 2', type: 'maven'
         JAVA_HOME = tool name: 'JDK 17', type: 'jdk'
-        PATH = "${env.PATH};${MAVEN_HOME}\\bin;${JAVA_HOME}\\bin"
+        GIT_HOME = tool name: 'Git', type: 'git'
+        PATH = "${env.PATH};${MAVEN_HOME}\\bin;${JAVA_HOME}\\bin;${GIT_HOME}\\bin"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/gszybiak/km-to-mile-converter.git'
+                script {
+                    echo "Checking out the repository..."
+                    git branch: 'main', url: 'https://github.com/gszybiak/km-to-mile-converter.git'
+                }
             }
         }
 
@@ -18,8 +22,8 @@ pipeline {
             steps {
                 script {
                     echo "PATH: ${env.PATH}"
-                    bat "echo Hello World" // Proste polecenie sprawdzające
-                    bat "cmd /c echo CMD is working" // Inne testowe polecenie
+                    bat "echo Hello World"
+                    bat "cmd /c echo CMD is working"
                 }
             }
         }
@@ -29,8 +33,9 @@ pipeline {
                 script {
                     echo "MAVEN_HOME: ${MAVEN_HOME}"
                     echo "JAVA_HOME: ${JAVA_HOME}"
-                    bat "mvn.cmd -version"
-                    bat "mvn.cmd clean test"
+                    echo "GIT_HOME: ${GIT_HOME}"
+                    bat "mvn.cmd -version" // Sprawdzenie wersji Maven
+                    bat "mvn.cmd clean test" // Kompilacja i uruchomienie testów
                 }
             }
         }
@@ -38,6 +43,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
+                    echo "Starting the application..."
                     bat "mvn.cmd spring-boot:run"
                 }
             }
@@ -46,7 +52,10 @@ pipeline {
 
     post {
         always {
-            junit '**/target/surefire-reports/*.xml'
+            script {
+                echo "Archiving test results..."
+            }
+            junit '**/target/surefire-reports/*.xml' // Raporty testowe Surefire
         }
     }
 }
